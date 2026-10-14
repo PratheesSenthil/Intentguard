@@ -1,0 +1,201 @@
+{
+  "domain": "ecommerce",
+  "verb_groups": {
+    "create": [
+      "create",
+      "add",
+      "insert",
+      "make",
+      "post",
+      "reply",
+      "respond",
+      "comment",
+      "note",
+      "log",
+      "record",
+      "initiate",
+      "start",
+      "raise",
+      "open",
+      "file",
+      "submit"
+    ],
+    "get": [
+      "get",
+      "fetch",
+      "list",
+      "check",
+      "search",
+      "find",
+      "summarize",
+      "summarise",
+      "pull",
+      "review",
+      "read",
+      "show",
+      "view",
+      "display",
+      "look"
+    ],
+    "update": [
+      "update",
+      "edit",
+      "modify",
+      "change",
+      "set",
+      "patch",
+      "put",
+      "mark",
+      "reschedule",
+      "reassign",
+      "advance",
+      "damage",
+      "adjust",
+      "refresh",
+      "restock"
+    ],
+    "delete": [
+      "delete",
+      "remove",
+      "drop",
+      "destroy",
+      "cancel",
+      "deactivate",
+      "discontinue",
+      "void"
+    ],
+    "apply": [
+      "apply",
+      "use",
+      "redeem",
+      "assign",
+      "stack"
+    ],
+    "pay": [
+      "pay",
+      "checkout",
+      "charge"
+    ],
+    "close": [
+      "close",
+      "resolve",
+      "complete",
+      "finish"
+    ],
+    "restrict": [
+      "freeze",
+      "block",
+      "blacklist",
+      "suspend",
+      "lock",
+      "ban",
+      "disable",
+      "flag"
+    ],
+    "restore": [
+      "unfreeze",
+      "unblock",
+      "unlock",
+      "reactivate",
+      "enable",
+      "restore",
+      "reinstate"
+    ],
+    "approve": [
+      "approve"
+    ],
+    "refund": [
+      "refund",
+      "reimburse",
+      "chargeback"
+    ],
+    "pack": [
+      "pack"
+    ],
+    "merge": [
+      "merge"
+    ],
+    "split": [
+      "split"
+    ],
+    "escalate": [
+      "escalate"
+    ],
+    "reopen": [
+      "reopen"
+    ],
+    "receive": [
+      "receive"
+    ],
+    "send": [
+      "send",
+      "notify",
+      "resend"
+    ],
+    "login": [
+      "login"
+    ],
+    "verify": [
+      "verify",
+      "validate"
+    ]
+  },
+  "entity_vocab": [
+    "account",
+    "address",
+    "addresses",
+    "alert",
+    "campaign",
+    "campaigns",
+    "cart",
+    "checkout",
+    "code",
+    "codes",
+    "comment",
+    "comments",
+    "coupon",
+    "credit",
+    "customer",
+    "discount",
+    "flag",
+    "flags",
+    "identity",
+    "inventory",
+    "invoice",
+    "location",
+    "movement",
+    "movements",
+    "order",
+    "orders",
+    "payment",
+    "product",
+    "products",
+    "refund",
+    "request",
+    "restock alert",
+    "restock request",
+    "restock requests",
+    "return",
+    "returns",
+    "review",
+    "risk",
+    "score",
+    "shipment",
+    "shipments",
+    "stock",
+    "store",
+    "ticket",
+    "tickets",
+    "user"
+  ],
+  "compatible": [
+    [
+      "get",
+      "verify"
+    ],
+    [
+      "apply",
+      "verify"
+    ]
+  ]
+}

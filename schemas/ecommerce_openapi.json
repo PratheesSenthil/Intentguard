@@ -1,0 +1,5401 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Enterprise E-Commerce API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/auth/login/": {
+            "post": {
+                "operationId": "auth_login_create",
+                "description": "Takes a set of user credentials and returns an access and refresh JSON web\ntoken pair to prove the authentication of those credentials.",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CustomTokenObtainPair"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CustomTokenObtainPair"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CustomTokenObtainPair"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomTokenObtainPair"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/auth/me/": {
+            "get": {
+                "operationId": "auth_me_retrieve",
+                "tags": [
+                    "accounts"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/auth/refresh/": {
+            "post": {
+                "operationId": "auth_refresh_create",
+                "description": "Takes a refresh type JSON web token and returns an access type JSON web\ntoken if the refresh token is valid.",
+                "tags": [
+                    "auth"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRefresh"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRefresh"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TokenRefresh"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TokenRefresh"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/auth/staff/": {
+            "get": {
+                "operationId": "auth_staff_retrieve",
+                "tags": [
+                    "accounts"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/customers/": {
+            "get": {
+                "operationId": "customers_list",
+                "parameters": [
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "required": false,
+                        "in": "query",
+                        "description": "A search term.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedCustomerList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "customers_create",
+                "tags": [
+                    "customers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/customers/{id}/": {
+            "get": {
+                "operationId": "customers_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this customer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomerDetail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "customers_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this customer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "customers_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this customer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedCustomer"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedCustomer"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedCustomer"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "customers_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this customer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/customers/{id}/address/": {
+            "post": {
+                "operationId": "customers_address_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this customer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/customers/{id}/deactivate/": {
+            "post": {
+                "operationId": "customers_deactivate_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this customer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/customers/{id}/email/": {
+            "patch": {
+                "operationId": "customers_email_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this customer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedCustomer"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedCustomer"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedCustomer"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/customers/{id}/flag-vip/": {
+            "post": {
+                "operationId": "customers_flag_vip_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this customer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/customers/{id}/orders/": {
+            "get": {
+                "operationId": "customers_orders_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this customer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/customers/{id}/reset-password/": {
+            "post": {
+                "operationId": "customers_reset_password_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this customer.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/customers/merge/": {
+            "post": {
+                "operationId": "customers_merge_create",
+                "tags": [
+                    "customers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Customer"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/discounts/apply/": {
+            "post": {
+                "operationId": "discounts_apply_create",
+                "description": "Apply a discount code to an order.\nBody: { \"code\": \"SUMMER20\", \"order_id\": 5 }",
+                "tags": [
+                    "discounts"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/discounts/campaigns/": {
+            "get": {
+                "operationId": "discounts_campaigns_list",
+                "tags": [
+                    "discounts"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Campaign"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/discounts/codes/": {
+            "get": {
+                "operationId": "discounts_codes_retrieve",
+                "description": "GET: list all codes. POST: create a new code.",
+                "tags": [
+                    "discounts"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "discounts_codes_create",
+                "description": "GET: list all codes. POST: create a new code.",
+                "tags": [
+                    "discounts"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/discounts/codes/{code}/": {
+            "delete": {
+                "operationId": "discounts_codes_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "code",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "discounts"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/discounts/codes/{code}/validate/": {
+            "get": {
+                "operationId": "discounts_codes_validate_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "code",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "discounts"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/discounts/codes/create/": {
+            "post": {
+                "operationId": "discounts_codes_create_create",
+                "tags": [
+                    "discounts"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/discounts/loyalty/apply/": {
+            "post": {
+                "operationId": "discounts_loyalty_apply_create",
+                "description": "Redeem loyalty points against an order.\nBody: { \"customer_id\": 1, \"points\": 100 }",
+                "tags": [
+                    "discounts"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/discounts/stack/": {
+            "post": {
+                "operationId": "discounts_stack_create",
+                "description": "Validate and stack multiple promo codes for a single order.\nBody: { \"codes\": [\"SUMMER20\", \"LOYAL10\"], \"order_id\": 5 }",
+                "tags": [
+                    "discounts"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/fraud/customers/{customer_id}/blacklist/": {
+            "post": {
+                "operationId": "fraud_customers_blacklist_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "customer_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fraud"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/fraud/customers/{customer_id}/freeze/": {
+            "post": {
+                "operationId": "fraud_customers_freeze_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "customer_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fraud"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/fraud/customers/{customer_id}/risk-score/": {
+            "get": {
+                "operationId": "fraud_customers_risk_score_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "customer_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fraud"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RiskScore"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fraud/customers/{customer_id}/unfreeze/": {
+            "post": {
+                "operationId": "fraud_customers_unfreeze_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "customer_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fraud"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/fraud/customers/{customer_id}/verify-identity/": {
+            "post": {
+                "operationId": "fraud_customers_verify_identity_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "customer_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fraud"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/fraud/flags/": {
+            "get": {
+                "operationId": "fraud_flags_list",
+                "tags": [
+                    "fraud"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FraudFlag"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fraud/flags/{id}/": {
+            "get": {
+                "operationId": "fraud_flags_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fraud"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FraudFlag"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/fraud/flags/{id}/update_status/": {
+            "post": {
+                "operationId": "fraud_flags_update_status_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fraud"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/fraud/orders/{order_id}/chargeback/": {
+            "post": {
+                "operationId": "fraud_orders_chargeback_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "order_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fraud"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/fraud/orders/{order_id}/flag/": {
+            "post": {
+                "operationId": "fraud_orders_flag_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "order_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "fraud"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/inventory/{product_id}/stock/": {
+            "get": {
+                "operationId": "inventory_stock_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "product_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/inventory/{product_id}/stock/update/": {
+            "patch": {
+                "operationId": "inventory_stock_update_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "product_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/inventory/products/": {
+            "get": {
+                "operationId": "inventory_products_list",
+                "tags": [
+                    "inventory"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Product"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "inventory_products_create",
+                "tags": [
+                    "inventory"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/inventory/products/{id}/": {
+            "get": {
+                "operationId": "inventory_products_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this product.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductDetail"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "inventory_products_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this product.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "inventory_products_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this product.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedProduct"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedProduct"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedProduct"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "inventory_products_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this product.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/inventory/products/{id}/description/": {
+            "patch": {
+                "operationId": "inventory_products_description_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this product.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedProduct"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedProduct"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedProduct"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/inventory/products/{id}/discontinue/": {
+            "post": {
+                "operationId": "inventory_products_discontinue_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this product.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/inventory/products/{id}/price/": {
+            "patch": {
+                "operationId": "inventory_products_price_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this product.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedProduct"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedProduct"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedProduct"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/inventory/products/{id}/stock/": {
+            "get": {
+                "operationId": "inventory_products_stock_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this product.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "inventory_products_stock_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this product.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedProduct"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedProduct"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedProduct"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/inventory/products/{product_id}/adjust/": {
+            "post": {
+                "operationId": "inventory_products_adjust_create",
+                "description": "POST /api/inventory/products/<id>/adjust/\nTakes: adjustment_type, quantity_change, note\nCreates StockMovement and updates InventoryItem.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "product_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/inventory/products/{product_id}/movements/": {
+            "get": {
+                "operationId": "inventory_products_movements_retrieve",
+                "description": "GET /api/inventory/products/<id>/movements/\nLists history of stock movements for a product.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "product_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/inventory/products/bulk-price-update/": {
+            "post": {
+                "operationId": "inventory_products_bulk_price_update_create",
+                "description": "Accepts: {\"updates\": [{\"id\": 1, \"price\": \"29.99\"}, ...]}",
+                "tags": [
+                    "inventory"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Product"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/inventory/restock-requests/": {
+            "get": {
+                "operationId": "inventory_restock_requests_retrieve",
+                "description": "GET: List all restock requests.\nPOST: Create a new restock request (takes product_id, quantity_requested).",
+                "tags": [
+                    "inventory"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "inventory_restock_requests_create",
+                "description": "GET: List all restock requests.\nPOST: Create a new restock request (takes product_id, quantity_requested).",
+                "tags": [
+                    "inventory"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/inventory/restock-requests/{request_id}/approve/": {
+            "post": {
+                "operationId": "inventory_restock_requests_approve_create",
+                "description": "POST /api/inventory/restock-requests/<id>/approve/\nStore Manager only: Approves a pending request and marks it as ordered.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "request_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/inventory/restock-requests/{request_id}/receive/": {
+            "post": {
+                "operationId": "inventory_restock_requests_receive_create",
+                "description": "POST /api/inventory/restock-requests/<id>/receive/\nWarehouse Staff only: Marks ordered request as received and creates a StockMovement.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "request_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "inventory"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/orders/": {
+            "get": {
+                "operationId": "orders_list",
+                "parameters": [
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedOrderList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "orders_create",
+                "tags": [
+                    "orders"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/orders/{id}/": {
+            "get": {
+                "operationId": "orders_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this order.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "orders_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this order.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "orders_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this order.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedOrder"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedOrder"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedOrder"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "orders_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this order.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/orders/{id}/cancel/": {
+            "post": {
+                "operationId": "orders_cancel_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this order.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/orders/{id}/items/": {
+            "patch": {
+                "operationId": "orders_items_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this order.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedOrder"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedOrder"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedOrder"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/orders/{id}/reschedule/": {
+            "patch": {
+                "operationId": "orders_reschedule_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this order.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedOrder"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedOrder"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedOrder"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/orders/{id}/resend-confirmation/": {
+            "post": {
+                "operationId": "orders_resend_confirmation_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this order.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/orders/{id}/shipping-address/": {
+            "patch": {
+                "operationId": "orders_shipping_address_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this order.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedOrder"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedOrder"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedOrder"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/orders/{id}/split/": {
+            "post": {
+                "operationId": "orders_split_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this order.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/orders/{id}/status/": {
+            "get": {
+                "operationId": "orders_status_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this order.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "orders"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/orders/merge/": {
+            "post": {
+                "operationId": "orders_merge_create",
+                "tags": [
+                    "orders"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Order"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Order"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/payments/{payment_id}/charge/": {
+            "post": {
+                "operationId": "payments_charge_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "payment_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/payments/{payment_id}/method/": {
+            "patch": {
+                "operationId": "payments_method_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "payment_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/payments/{payment_id}/partial-refund/": {
+            "post": {
+                "operationId": "payments_partial_refund_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "payment_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/payments/{payment_id}/refund/": {
+            "post": {
+                "operationId": "payments_refund_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "payment_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/payments/{payment_id}/void/": {
+            "post": {
+                "operationId": "payments_void_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "payment_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/payments/customer/{customer_id}/": {
+            "get": {
+                "operationId": "payments_customer_list",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "customer_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Payment"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/payments/customer/{customer_id}/store-credit/": {
+            "post": {
+                "operationId": "payments_customer_store_credit_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "customer_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/payments/orders/{order_id}/invoice/": {
+            "get": {
+                "operationId": "payments_orders_invoice_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "order_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "payments"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Invoice"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/payments/recent/": {
+            "get": {
+                "operationId": "payments_recent_list",
+                "tags": [
+                    "payments"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Payment"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/support/tickets/": {
+            "get": {
+                "operationId": "support_tickets_list",
+                "parameters": [
+                    {
+                        "name": "ordering",
+                        "required": false,
+                        "in": "query",
+                        "description": "Which field to use when ordering the results.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "required": false,
+                        "in": "query",
+                        "description": "A page number within the paginated result set.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page_size",
+                        "required": false,
+                        "in": "query",
+                        "description": "Number of results to return per page.",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "tags": [
+                    "support"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedSupportTicketList"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "support_tickets_create",
+                "tags": [
+                    "support"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SupportTicket"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/support/tickets/{id}/": {
+            "get": {
+                "operationId": "support_tickets_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this support ticket.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "support"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SupportTicket"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "put": {
+                "operationId": "support_tickets_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this support ticket.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "support"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SupportTicket"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "support_tickets_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this support ticket.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "support"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedSupportTicket"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedSupportTicket"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatchedSupportTicket"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SupportTicket"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "support_tickets_destroy",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this support ticket.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "support"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/support/tickets/{id}/assign/": {
+            "post": {
+                "operationId": "support_tickets_assign_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this support ticket.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "support"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SupportTicket"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/support/tickets/{id}/close/": {
+            "post": {
+                "operationId": "support_tickets_close_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this support ticket.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "support"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SupportTicket"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/support/tickets/{id}/comments/": {
+            "get": {
+                "operationId": "support_tickets_comments_retrieve",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this support ticket.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "support"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SupportTicket"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            },
+            "post": {
+                "operationId": "support_tickets_comments_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this support ticket.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "support"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SupportTicket"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/support/tickets/{id}/escalate/": {
+            "post": {
+                "operationId": "support_tickets_escalate_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this support ticket.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "support"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SupportTicket"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/support/tickets/{id}/notify/": {
+            "post": {
+                "operationId": "support_tickets_notify_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this support ticket.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "support"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SupportTicket"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/support/tickets/{id}/reopen/": {
+            "post": {
+                "operationId": "support_tickets_reopen_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this support ticket.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "support"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SupportTicket"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/support/tickets/{id}/resolve/": {
+            "post": {
+                "operationId": "support_tickets_resolve_create",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "A unique integer value identifying this support ticket.",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "support"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupportTicket"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SupportTicket"
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/warehouse/pack/{order_id}/": {
+            "post": {
+                "operationId": "warehouse_pack_create",
+                "description": "Pack an order and create a Shipment record.\nBody: { \"carrier\": \"FedEx\" }  (optional — auto-assigned if omitted)\nSets: order.status → 'packed', shipment.status → 'packed', location → \"Warehouse — Packed & Ready\"",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "order_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "warehouse"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/warehouse/ready-to-pack/": {
+            "get": {
+                "operationId": "warehouse_ready_to_pack_retrieve",
+                "description": "Returns all orders with status 'processing' that have no associated shipment yet.\nThese are orders paid and confirmed, waiting to be packed by warehouse staff.",
+                "tags": [
+                    "warehouse"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/warehouse/restock-alert/": {
+            "post": {
+                "operationId": "warehouse_restock_alert_create",
+                "tags": [
+                    "warehouse"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/warehouse/returns/": {
+            "get": {
+                "operationId": "warehouse_returns_retrieve",
+                "description": "GET: list all return requests. POST: initiate a new return.",
+                "tags": [
+                    "warehouse"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "warehouse_returns_create",
+                "description": "GET: list all return requests. POST: initiate a new return.",
+                "tags": [
+                    "warehouse"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/warehouse/shipments/": {
+            "get": {
+                "operationId": "warehouse_shipments_list",
+                "description": "List all shipments, most recent first. Supports ?status= filter.",
+                "tags": [
+                    "warehouse"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Shipment"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/api/warehouse/shipments/{shipment_id}/advance/": {
+            "post": {
+                "operationId": "warehouse_shipments_advance_create",
+                "description": "Advance a shipment through the pipeline:\npacked → shipped → out_for_delivery → delivered\nAlso updates the linked order's status and the warehouse_location field.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "shipment_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "warehouse"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/warehouse/shipments/{shipment_id}/damage/": {
+            "patch": {
+                "operationId": "warehouse_shipments_damage_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "shipment_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "warehouse"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/warehouse/shipments/{shipment_id}/location/": {
+            "patch": {
+                "operationId": "warehouse_shipments_location_partial_update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "shipment_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "warehouse"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No response body"
+                    }
+                }
+            }
+        },
+        "/api/warehouse/shipments/order/{order_id}/": {
+            "get": {
+                "operationId": "warehouse_shipments_order_list",
+                "description": "Get all shipments for a given order.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "order_id",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "warehouse"
+                ],
+                "security": [
+                    {
+                        "jwtAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Shipment"
+                                    }
+                                }
+                            }
+                        },
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Address": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "street": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "city": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "state": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "zip_code": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "country": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "is_primary": {
+                        "type": "boolean"
+                    },
+                    "customer": {
+                        "type": "integer",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "city",
+                    "customer",
+                    "id",
+                    "state",
+                    "street",
+                    "zip_code"
+                ]
+            },
+            "Campaign": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "discount_code": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "end_date",
+                    "id",
+                    "name",
+                    "start_date"
+                ]
+            },
+            "Category": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "slug": {
+                        "type": "string",
+                        "maxLength": 50,
+                        "pattern": "^[-a-zA-Z0-9_]+$"
+                    },
+                    "parent": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "slug"
+                ]
+            },
+            "CustomTokenObtainPair": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "writeOnly": true
+                    },
+                    "password": {
+                        "type": "string",
+                        "writeOnly": true
+                    }
+                },
+                "required": [
+                    "password",
+                    "username"
+                ]
+            },
+            "Customer": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "joined_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "is_vip": {
+                        "type": "boolean"
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "loyalty_points": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648
+                    },
+                    "notes": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "email",
+                    "first_name",
+                    "id",
+                    "joined_at",
+                    "last_name"
+                ]
+            },
+            "CustomerDetail": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "addresses": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Address"
+                        },
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "joined_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "is_vip": {
+                        "type": "boolean"
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "loyalty_points": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648
+                    },
+                    "notes": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "addresses",
+                    "created_at",
+                    "email",
+                    "first_name",
+                    "id",
+                    "joined_at",
+                    "last_name"
+                ]
+            },
+            "FraudFlag": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "reason": {
+                        "type": "string"
+                    },
+                    "severity": {
+                        "$ref": "#/components/schemas/SeverityEnum"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/FraudFlagStatusEnum"
+                    },
+                    "resolution_note": {
+                        "type": "string"
+                    },
+                    "flagged_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "is_resolved": {
+                        "type": "boolean"
+                    },
+                    "resolved_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "order": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "customer": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "flagged_by": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "flagged_at",
+                    "id",
+                    "reason"
+                ]
+            },
+            "FraudFlagStatusEnum": {
+                "enum": [
+                    "flagged",
+                    "under_review",
+                    "resolved",
+                    "confirmed"
+                ],
+                "type": "string",
+                "description": "* `flagged` - Flagged\n* `under_review` - Under Review\n* `resolved` - Resolved\n* `confirmed` - Confirmed"
+            },
+            "InventoryItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "warehouse_location": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "quantity_in_stock": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648
+                    },
+                    "reorder_threshold": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648
+                    },
+                    "last_restocked": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "product": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "id",
+                    "product"
+                ]
+            },
+            "Invoice": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "invoice_number": {
+                        "type": "string",
+                        "maxLength": 50
+                    },
+                    "issued_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "due_date": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "total_amount": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$"
+                    },
+                    "is_paid": {
+                        "type": "boolean"
+                    },
+                    "order": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "id",
+                    "invoice_number",
+                    "issued_at",
+                    "order",
+                    "total_amount"
+                ]
+            },
+            "MethodEnum": {
+                "enum": [
+                    "credit_card",
+                    "debit_card",
+                    "paypal",
+                    "store_credit",
+                    "bank_transfer"
+                ],
+                "type": "string",
+                "description": "* `credit_card` - Credit Card\n* `debit_card` - Debit Card\n* `paypal` - PayPal\n* `store_credit` - Store Credit\n* `bank_transfer` - Bank Transfer"
+            },
+            "Order": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderItem"
+                        },
+                        "readOnly": true
+                    },
+                    "customer_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/OrderStatusEnum"
+                    },
+                    "shipping_street": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "shipping_city": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "shipping_state": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "shipping_zip": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "shipping_country": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "delivery_date": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "notes": {
+                        "type": "string"
+                    },
+                    "total_amount": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$"
+                    },
+                    "customer": {
+                        "type": "integer"
+                    },
+                    "shipping_address": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "created_at",
+                    "customer",
+                    "customer_name",
+                    "id",
+                    "items",
+                    "updated_at"
+                ]
+            },
+            "OrderItem": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "product": {
+                        "type": "integer"
+                    },
+                    "product_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": 0
+                    },
+                    "unit_price": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$"
+                    }
+                },
+                "required": [
+                    "id",
+                    "product",
+                    "product_name",
+                    "unit_price"
+                ]
+            },
+            "OrderStatusEnum": {
+                "enum": [
+                    "pending",
+                    "confirmed",
+                    "processing",
+                    "packed",
+                    "shipped",
+                    "out_for_delivery",
+                    "delivered",
+                    "cancelled",
+                    "refunded"
+                ],
+                "type": "string",
+                "description": "* `pending` - Pending\n* `confirmed` - Confirmed\n* `processing` - Processing\n* `packed` - Packed\n* `shipped` - Shipped\n* `out_for_delivery` - Out for Delivery\n* `delivered` - Delivered\n* `cancelled` - Cancelled\n* `refunded` - Refunded"
+            },
+            "PaginatedCustomerList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=4"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=2"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Customer"
+                        }
+                    }
+                }
+            },
+            "PaginatedOrderList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=4"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=2"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Order"
+                        }
+                    }
+                }
+            },
+            "PaginatedSupportTicketList": {
+                "type": "object",
+                "required": [
+                    "count",
+                    "results"
+                ],
+                "properties": {
+                    "count": {
+                        "type": "integer",
+                        "example": 123
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=4"
+                    },
+                    "previous": {
+                        "type": "string",
+                        "nullable": true,
+                        "format": "uri",
+                        "example": "http://api.example.org/accounts/?page=2"
+                    },
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SupportTicket"
+                        }
+                    }
+                }
+            },
+            "PatchedCustomer": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "joined_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "is_vip": {
+                        "type": "boolean"
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "loyalty_points": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648
+                    },
+                    "notes": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PatchedOrder": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderItem"
+                        },
+                        "readOnly": true
+                    },
+                    "customer_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/OrderStatusEnum"
+                    },
+                    "shipping_street": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "shipping_city": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "shipping_state": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "shipping_zip": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "shipping_country": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "delivery_date": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "notes": {
+                        "type": "string"
+                    },
+                    "total_amount": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$"
+                    },
+                    "customer": {
+                        "type": "integer"
+                    },
+                    "shipping_address": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                }
+            },
+            "PatchedProduct": {
+                "type": "object",
+                "description": "List serializer — includes inlined stock fields for the inventory table.",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "sku": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "category": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "category_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "price": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "quantity_in_stock": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "reorder_threshold": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "warehouse_location": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "is_low_stock": {
+                        "type": "string",
+                        "readOnly": true
+                    }
+                }
+            },
+            "PatchedSupportTicket": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "comments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TicketComment"
+                        },
+                        "readOnly": true
+                    },
+                    "customer_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "assigned_to_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "subject": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "body": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/SupportTicketStatusEnum"
+                    },
+                    "priority": {
+                        "$ref": "#/components/schemas/PriorityEnum"
+                    },
+                    "resolution_note": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "customer": {
+                        "type": "integer"
+                    },
+                    "assigned_to": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "order": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                }
+            },
+            "Payment": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "payment_method": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "refunds": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Refund"
+                        },
+                        "readOnly": true
+                    },
+                    "method": {
+                        "$ref": "#/components/schemas/MethodEnum"
+                    },
+                    "amount": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/PaymentStatusEnum"
+                    },
+                    "transaction_id": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "charged_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "card_last_four": {
+                        "type": "string",
+                        "maxLength": 4
+                    },
+                    "card_brand": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "order": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "created_at",
+                    "id",
+                    "method",
+                    "order",
+                    "payment_method",
+                    "refunds",
+                    "transaction_id"
+                ]
+            },
+            "PaymentStatusEnum": {
+                "enum": [
+                    "pending",
+                    "completed",
+                    "failed",
+                    "voided",
+                    "refunded",
+                    "partially_refunded"
+                ],
+                "type": "string",
+                "description": "* `pending` - Pending\n* `completed` - Completed\n* `failed` - Failed\n* `voided` - Voided\n* `refunded` - Refunded\n* `partially_refunded` - Partially Refunded"
+            },
+            "PriorityEnum": {
+                "enum": [
+                    "low",
+                    "medium",
+                    "high",
+                    "urgent"
+                ],
+                "type": "string",
+                "description": "* `low` - Low\n* `medium` - Medium\n* `high` - High\n* `urgent` - Urgent"
+            },
+            "Product": {
+                "type": "object",
+                "description": "List serializer — includes inlined stock fields for the inventory table.",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "sku": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "category": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "category_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "price": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "quantity_in_stock": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "reorder_threshold": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "warehouse_location": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "is_low_stock": {
+                        "type": "string",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "category_name",
+                    "created_at",
+                    "id",
+                    "is_low_stock",
+                    "name",
+                    "price",
+                    "quantity_in_stock",
+                    "reorder_threshold",
+                    "sku",
+                    "updated_at",
+                    "warehouse_location"
+                ]
+            },
+            "ProductDetail": {
+                "type": "object",
+                "description": "Detail serializer — includes full nested inventory and category objects.",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "category": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Category"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "inventory": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/InventoryItem"
+                            }
+                        ],
+                        "readOnly": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "sku": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "price": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "is_active": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    }
+                },
+                "required": [
+                    "category",
+                    "created_at",
+                    "id",
+                    "inventory",
+                    "name",
+                    "price",
+                    "sku",
+                    "updated_at"
+                ]
+            },
+            "Refund": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "issued_by_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "amount": {
+                        "type": "string",
+                        "format": "decimal",
+                        "pattern": "^-?\\d{0,8}(?:\\.\\d{0,2})?$"
+                    },
+                    "reason": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/RefundStatusEnum"
+                    },
+                    "issued_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "payment": {
+                        "type": "integer"
+                    },
+                    "issued_by": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "amount",
+                    "created_at",
+                    "id",
+                    "issued_at",
+                    "issued_by_name",
+                    "payment",
+                    "reason"
+                ]
+            },
+            "RefundStatusEnum": {
+                "enum": [
+                    "pending",
+                    "approved",
+                    "rejected",
+                    "processed"
+                ],
+                "type": "string",
+                "description": "* `pending` - Pending\n* `approved` - Approved\n* `rejected` - Rejected\n* `processed` - Processed"
+            },
+            "RiskScore": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "score": {
+                        "type": "integer",
+                        "maximum": 2147483647,
+                        "minimum": -2147483648
+                    },
+                    "computed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "factors": {},
+                    "customer": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "computed_at",
+                    "created_at",
+                    "customer",
+                    "id"
+                ]
+            },
+            "RoleEnum": {
+                "enum": [
+                    "support_agent",
+                    "senior_support",
+                    "warehouse_staff",
+                    "fraud_finance",
+                    "store_manager"
+                ],
+                "type": "string",
+                "description": "* `support_agent` - Customer Support Agent\n* `senior_support` - Senior Support / Team Lead\n* `warehouse_staff` - Warehouse Staff\n* `fraud_finance` - Fraud & Finance Team\n* `store_manager` - Store Manager / Admin"
+            },
+            "SeverityEnum": {
+                "enum": [
+                    "low",
+                    "medium",
+                    "high",
+                    "critical"
+                ],
+                "type": "string",
+                "description": "* `low` - Low\n* `medium` - Medium\n* `high` - High\n* `critical` - Critical"
+            },
+            "Shipment": {
+                "type": "object",
+                "description": "Serializer with denormalized customer and order info for the shipments table.",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "customer_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "customer_id": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "order_total": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "carrier": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "tracking_number": {
+                        "type": "string",
+                        "maxLength": 200
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/ShipmentStatusEnum"
+                    },
+                    "shipped_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "estimated_delivery": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "warehouse_location": {
+                        "type": "string",
+                        "maxLength": 100
+                    },
+                    "is_damaged": {
+                        "type": "boolean"
+                    },
+                    "damage_notes": {
+                        "type": "string"
+                    },
+                    "order": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "carrier",
+                    "customer_id",
+                    "customer_name",
+                    "id",
+                    "order",
+                    "order_total"
+                ]
+            },
+            "ShipmentStatusEnum": {
+                "enum": [
+                    "pending",
+                    "processing",
+                    "shipped",
+                    "in_transit",
+                    "delivered",
+                    "failed",
+                    "returned"
+                ],
+                "type": "string",
+                "description": "* `pending` - Pending\n* `processing` - Processing\n* `shipped` - Shipped\n* `in_transit` - In Transit\n* `delivered` - Delivered\n* `failed` - Failed\n* `returned` - Returned"
+            },
+            "SupportTicket": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "comments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TicketComment"
+                        },
+                        "readOnly": true
+                    },
+                    "customer_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "assigned_to_name": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "subject": {
+                        "type": "string",
+                        "maxLength": 300
+                    },
+                    "body": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/SupportTicketStatusEnum"
+                    },
+                    "priority": {
+                        "$ref": "#/components/schemas/PriorityEnum"
+                    },
+                    "resolution_note": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "customer": {
+                        "type": "integer"
+                    },
+                    "assigned_to": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "order": {
+                        "type": "integer",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "assigned_to_name",
+                    "body",
+                    "comments",
+                    "created_at",
+                    "customer",
+                    "customer_name",
+                    "id",
+                    "subject",
+                    "updated_at"
+                ]
+            },
+            "SupportTicketStatusEnum": {
+                "enum": [
+                    "open",
+                    "assigned",
+                    "in_progress",
+                    "escalated",
+                    "resolved",
+                    "closed",
+                    "reopened"
+                ],
+                "type": "string",
+                "description": "* `open` - Open\n* `assigned` - Assigned\n* `in_progress` - In Progress\n* `escalated` - Escalated\n* `resolved` - Resolved\n* `closed` - Closed\n* `reopened` - Reopened"
+            },
+            "TicketComment": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "user": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "body": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                    },
+                    "is_internal": {
+                        "type": "boolean"
+                    },
+                    "ticket": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "author": {
+                        "type": "integer",
+                        "readOnly": true,
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "author",
+                    "body",
+                    "created_at",
+                    "id",
+                    "ticket",
+                    "user"
+                ]
+            },
+            "TokenRefresh": {
+                "type": "object",
+                "properties": {
+                    "access": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "refresh": {
+                        "type": "string",
+                        "writeOnly": true
+                    }
+                },
+                "required": [
+                    "access",
+                    "refresh"
+                ]
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "username": {
+                        "type": "string",
+                        "description": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        "pattern": "^[\\w.@+-]+$",
+                        "maxLength": 150
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 254
+                    },
+                    "role": {
+                        "$ref": "#/components/schemas/RoleEnum"
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "maxLength": 150
+                    }
+                },
+                "required": [
+                    "email",
+                    "id",
+                    "username"
+                ]
+            }
+        },
+        "securitySchemes": {
+            "jwtAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
