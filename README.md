@@ -53,9 +53,9 @@ user_message (str)
 
 ### Scoring Formula
 
-$$s = \alpha \cdot \text{cosine\_sim} + \beta \cdot \text{verb\_match} + \gamma \cdot \text{entity\_overlap}$$
+$$s = \alpha \, C + \beta \, V + \gamma \, E$$
 
-Current weights: $\alpha = 0.60$, $\beta = 0.25$, $\gamma = 0.15$ (enforced to sum to $1.0$).
+where C is the cosine similarity of the intent and call embeddings, V is the verb-match score, and E is the entity-overlap score, with α = 0.60, β = 0.25, γ = 0.15.
 
 ---
 
